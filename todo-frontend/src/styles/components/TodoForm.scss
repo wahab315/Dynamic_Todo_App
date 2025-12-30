@@ -1,0 +1,36 @@
+@use '../variables' as *;
+
+.todo-form {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
+}
+
+.todo-form__input {
+  flex: 1;
+  padding: $spacing-sm;
+  font-size: 1rem;
+  border: 1px solid #333;
+  background-color: #2a2a2a;
+  color: $text-white;
+  font-family: inherit;
+
+  &:focus {
+    outline: 1px solid #444;
+  }
+}
+
+.todo-form__button {
+  padding: $spacing-sm $spacing-md;
+  font-size: 1rem;
+  border: 1px solid #333;
+  background-color: #2a2a2a;
+  color: $text-white;
+  cursor: pointer;
+  font-family: inherit;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+

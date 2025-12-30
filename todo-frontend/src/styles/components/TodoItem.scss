@@ -1,0 +1,75 @@
+@use '../variables' as *;
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm;
+  margin-bottom: $spacing-xs;
+  background-color: #2a2a2a;
+}
+
+.todo-item--completed .todo-item__title {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.todo-item__toggle {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #444;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $icon-white;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+
+.todo-item__title {
+  flex: 1;
+  cursor: pointer;
+  color: $text-white;
+}
+
+.todo-item__input {
+  flex: 1;
+  padding: $spacing-xs;
+  font-size: 1rem;
+  border: 1px solid #444;
+  background-color: #1a1a1a;
+  color: $text-white;
+  font-family: inherit;
+
+  &:focus {
+    outline: 1px solid #555;
+  }
+}
+
+.todo-item__actions {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.todo-item__button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $icon-white;
+  padding: 0;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+

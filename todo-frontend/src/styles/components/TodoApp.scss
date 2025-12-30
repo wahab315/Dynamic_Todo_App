@@ -1,0 +1,24 @@
+@use '../variables' as *;
+
+.todo-app {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.todo-app__title {
+  font-size: 2rem;
+  margin-bottom: $spacing-lg;
+  color: $text-white;
+  text-align: center;
+}
+
+.todo-app__list {
+  margin-top: $spacing-md;
+}
+
+.todo-app__empty {
+  text-align: center;
+  color: #888;
+  padding: $spacing-lg;
+}
+
