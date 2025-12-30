@@ -4,6 +4,7 @@ import Todo from '../models/todo.model';
 interface ApiResponse<T = unknown> {
   success: boolean;
   message: string;
+  length?: number;
   data?: T;
 }
 
@@ -23,11 +24,22 @@ export const createTodo = async (
       return;
     }
 
-    const todo = await Todo.create({ title: title.trim() });
+    const trimmedTitle = title.trim();
+
+    if (trimmedTitle.length < 4) {
+      res.status(400).json({
+        success: false,
+        message: 'Title must be at least 4 characters long',
+      });
+      return;
+    }
+
+    const todo = await Todo.create({ title: trimmedTitle });
 
     const response: ApiResponse = {
       success: true,
       message: 'Todo created successfully',
+      length: 1,
       data: todo,
     };
 
@@ -48,6 +60,7 @@ export const getAllTodos = async (
     const response: ApiResponse = {
       success: true,
       message: 'Todos retrieved successfully',
+      length: todos.length,
       data: todos,
     };
 
@@ -76,7 +89,18 @@ export const updateTodo = async (
         });
         return;
       }
-      updateData.title = title.trim();
+
+      const trimmedTitle = title.trim();
+
+      if (trimmedTitle.length < 4) {
+        res.status(400).json({
+          success: false,
+          message: 'Title must be at least 4 characters long',
+        });
+        return;
+      }
+
+      updateData.title = trimmedTitle;
     }
 
     if (completed !== undefined) {

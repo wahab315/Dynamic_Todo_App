@@ -7,6 +7,11 @@ interface ErrorResponse {
   error?: string;
 }
 
+interface MongoError extends Error {
+  code?: number;
+  keyValue?: Record<string, unknown>;
+}
+
 export const errorMiddleware = (
   err: Error,
   _req: Request,
@@ -21,11 +26,22 @@ export const errorMiddleware = (
     message = 'Invalid ID format';
   } else if (err instanceof mongoose.Error.ValidationError) {
     statusCode = 400;
-    message = Object.values(err.errors)
-      .map((error) => error.message)
-      .join(', ');
-  } else if (err.message) {
-    message = err.message;
+    const errorMessages = Object.values(err.errors).map((error) => {
+      if (error.kind === 'minlength') {
+        return `Title must be at least ${(error as mongoose.Error.ValidatorError).properties.minlength} characters long`;
+      }
+      return error.message;
+    });
+    message = errorMessages.join(', ');
+  } else {
+    const mongoError = err as MongoError;
+    if (mongoError.code === 11000) {
+      statusCode = 409;
+      const field = Object.keys(mongoError.keyValue || {})[0];
+      message = `Todo with this ${field} already exists`;
+    } else if (err.message) {
+      message = err.message;
+    }
   }
 
   const errorResponse: ErrorResponse = {
