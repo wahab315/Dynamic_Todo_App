@@ -4,30 +4,31 @@ import type { Todo } from '../types/todo';
 
 interface TodoItemProps {
   todo: Todo;
-  onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
-  onUpdate: (id: string, title: string) => void;
+  onToggle: (id: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
+  onUpdate: (id: string, title: string) => Promise<void>;
 }
 
 const TodoItem = ({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(todo.title);
+  const todoId = todo._id || todo.id || '';
 
-  const handleEdit = () => {
+  const handleEdit = (): void => {
     if (!isEditing) {
       setEditTitle(todo.title);
       setIsEditing(true);
     }
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async (): Promise<void> => {
     if (editTitle.trim()) {
-      onUpdate(todo.id, editTitle.trim());
+      await onUpdate(todoId, editTitle.trim());
       setIsEditing(false);
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     setEditTitle(todo.title);
     setIsEditing(false);
   };
@@ -35,7 +36,7 @@ const TodoItem = ({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) => {
   return (
     <div className={`todo-item ${todo.completed ? 'todo-item--completed' : ''}`}>
       <button
-        onClick={() => onToggle(todo.id)}
+        onClick={() => onToggle(todoId)}
         className="todo-item__toggle"
         aria-label="Toggle completed"
       >
@@ -71,7 +72,7 @@ const TodoItem = ({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) => {
           <FaEdit />
         </button>
         <button
-          onClick={() => onDelete(todo.id)}
+          onClick={() => onDelete(todoId)}
           className="todo-item__button"
           aria-label="Delete todo"
         >
@@ -83,4 +84,3 @@ const TodoItem = ({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) => {
 };
 
 export default TodoItem;
-
