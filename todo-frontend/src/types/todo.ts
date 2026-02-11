@@ -7,3 +7,18 @@ export interface Todo {
   updatedAt?: string;
 }
 
+export interface TodoResponse {
+  success: boolean;
+  message: string;
+  data: Todo | Todo[];
+  length?: number;
+}
+
+export interface CreateTodoRequest {
+  title: string;
+}
+
+export interface UpdateTodoRequest {
+  title?: string;
+  completed?: boolean;
+}
